@@ -1,24 +1,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
-import { FaShoppingCart } from "react-icons/fa";
 import "./styles/listaGeral.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import ModalInformacoesCliente from "./modalInformacoesCliente"
+import ModalEdicaoCliente from "./modalEdicaoCliente";
 
 
 export default function ListaClientes({ tema }) {
     const [modalState, setModalState] = useState({
         show: false,
         clienteSelecionado: null,
+        modalType: ""
     });
 
-    function handleShow(cliente) {
+    function handleShow(cliente, modalType) {
         setModalState({
             show: true,
             clienteSelecionado: cliente,
+            modalType: modalType
         });
     }
 
@@ -26,6 +26,7 @@ export default function ListaClientes({ tema }) {
         setModalState({
             show: false,
             clienteSelecionado: null,
+            modalType: ""
         });
     }
 
@@ -39,12 +40,7 @@ export default function ListaClientes({ tema }) {
                 numero: "456",
                 dataExpedicao: new Date("August 19, 1975 23:15:30"),
                 tipo: "Cadastro de Pessoas Física"
-            },
-            {
-                numero: "654",
-                dataExpedicao: new Date("August 19, 1975 23:15:30"),
-                tipo: "Passaporte"
-            },
+            }
         ],
         telefone: [
             {
@@ -105,8 +101,11 @@ export default function ListaClientes({ tema }) {
     return (
         <div className="container-fluid">
             <div>
-                {modalState.show && (
+                {modalState.show && modalState.modalType === "Informações" &&(
                     <ModalInformacoesCliente show={modalState.show} handleClose={handleClose} tema={tema} cliente={modalState.clienteSelecionado} />
+                )}
+                {modalState.show && modalState.modalType === "Edição" &&(
+                    <ModalEdicaoCliente show={modalState.show} handleClose={handleClose} tema={tema} cliente={modalState.clienteSelecionado} />
                 )}
                 <h3 className="titulo">Clientes</h3>
                 <div className="list-group">
@@ -115,10 +114,17 @@ export default function ListaClientes({ tema }) {
                             <a
                                 href="#"
                                 className="list-group-item-action custom-link"
-                                onClick={() => handleShow(cliente)}
+                                onClick={() => handleShow(cliente, "Informações")}
                             >
                                 {cliente.nome}
                             </a>
+                            <button
+                                onClick={() => handleShow(cliente, 'Edição')}
+                                type="button"
+                                className="btn btn-outline-primary"
+                            >
+                                <FaPencil style={{ fontSize: 20 }} />
+                            </button>
                             <div className="btn-group">
                                 <button
                                     onClick={() => console.log("Deletando Cliente")}
