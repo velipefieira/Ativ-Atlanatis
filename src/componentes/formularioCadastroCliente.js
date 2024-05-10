@@ -1,138 +1,308 @@
-import React, { useState } from 'react';
-import "./styles/form.css";
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FaRegTrashCan } from "react-icons/fa6";
+import Button from "react-bootstrap/Button";
+import "./styles/form.css"
 
-export default function FormularioCadastroCliente({ tema }) {
-    const [rgList, setRgList] = useState([{ rg: '', dataEmissao: '' }]);
-    const [telefoneList, setTelefoneList] = useState([{ telefone: '' }]);
+export default function CadastroCliente() {
+    const [cliente, setCliente] = useState({
+        nome: "",
+        nomeSocial: "",
+        dataNascimento: "",
+        documentos: [{ numero: "", dataExpedicao: "", tipoDocumento: "" }],
+        telefones: [{ ddd: "", numero: "" }],
+        endereco: {
+            rua: "",
+            bairro: "",
+            cidade: "",
+            estado: "",
+            pais: "",
+            codigoPostal: ""
+        },
+        dependentes: [{ documentos: [{ numero: "", dataExpedicao: "", tipoDocumento: "" }] }]
+    });
 
-    const addRgField = () => {
-        setRgList([...rgList, { rg: '', dataEmissao: '' }]);
+    const handleChange = (e, field, index, subField) => {
+        const { value } = e.target;
+        if (index !== undefined) {
+            if (subField) {
+                const updatedArray = [...cliente[field]];
+                updatedArray[index][subField] = value;
+                setCliente({ ...cliente, [field]: updatedArray });
+            } else {
+                const updatedArray = [...cliente[field]];
+                updatedArray[index] = { ...updatedArray[index], ...value };
+                setCliente({ ...cliente, [field]: updatedArray });
+            }
+        } else {
+            setCliente({ ...cliente, [field]: value });
+        }
     };
 
-    const handleRgChange = (e, index) => {
-        const updatedRgList = [...rgList];
-        updatedRgList[index].rg = e.target.value;
-        setRgList(updatedRgList);
+    const addField = (field) => {
+        setCliente({ ...cliente, [field]: [...cliente[field], {}] });
     };
 
-    const handleDataEmissaoChange = (e, index) => {
-        const updatedRgList = [...rgList];
-        updatedRgList[index].dataEmissao = e.target.value;
-        setRgList(updatedRgList);
+    const removeField = (field, index) => {
+        const updatedArray = [...cliente[field]];
+        updatedArray.splice(index, 1);
+        setCliente({ ...cliente, [field]: updatedArray });
     };
 
-    const addTelefoneField = () => {
-        setTelefoneList([...telefoneList, { telefone: '' }]);
-    };
-
-    const handleTelefoneChange = (e, index) => {
-        const updatedTelefoneList = [...telefoneList];
-        updatedTelefoneList[index].telefone = e.target.value;
-        setTelefoneList(updatedTelefoneList);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Cliente cadastrado:", cliente);
     };
 
     return (
-        <div className="container-fluid">
-            <h3 style={{ textAlign: "center", marginBottom: 20, marginTop: 20 }}>
-                Cadastro de Clientes
-            </h3>
-            <form>
-                <label className="form-titulo">Nome:</label>
-                <div className="input-group mb-3">
+        <div className="container">
+            <h2 className="form-titulo">Cadastro de Cliente</h2>
+            <form onSubmit={handleSubmit}>
+                {/* Campo de Nome */}
+                <div className="mb-3">
+                    <label className="form-label">Nome</label>
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Digite o nome"
-                        aria-label="Nome"
-                        aria-describedby="basic-addon1"
+                        value={cliente.nome}
+                        onChange={(e) => handleChange(e, "nome")}
+                        required
                     />
                 </div>
 
-                <label className="form-titulo">Nome social:</label>
-                <div className="input-group mb-3">
+                {/* Campo de Nome Social */}
+                <div className="mb-3">
+                    <label className="form-label">Nome Social</label>
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Digite o nome social"
-                        aria-label="Nome social"
-                        aria-describedby="basic-addon1"
+                        value={cliente.nomeSocial}
+                        onChange={(e) => handleChange(e, "nomeSocial")}
                     />
                 </div>
-                <label className="form-titulo">E-mail:</label>
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1" style={{ background: tema }}>@</span>
-                    <input type="text" className="form-control" placeholder="Digite o E-mail" aria-label="E-mail" aria-describedby="basic-addon1" />
+
+                {/* Campo de Data de Nascimento */}
+                <div className="mb-3">
+                    <label className="form-label">Data de Nascimento</label>
+                    <input
+                        type="date"
+                        className="form-control"
+                        value={cliente.dataNascimento}
+                        onChange={(e) => handleChange(e, "dataNascimento")}
+                        required
+                    />
                 </div>
 
-                <label className="form-titulo">CPF:</label>
-                <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder=" Digite o CPF" aria-label="CPF" aria-describedby="basic-addon1" />
-                </div>
+                <hr/>
 
-                <label className="form-titulo">Data de Emissão do CPF:</label>
-                <div className="input-group mb-3">
-                    <input type="date" className="form-control" placeholder="Data de Emissão do CPF" aria-label="Data de emissão do CPF" aria-describedby="basic-addon1" />
-                </div>
-
-                <label className="form-titulo">RG:</label>
-                {rgList.map((rg, index) => (
-                    <div key={index} className="input-group mb-3">
+                <h4>Documentos: </h4>
+                {/* Campos de Documentos */}
+                {cliente.documentos.map((documento, index) => (
+                    <div key={index} className="mb-3">
+                        <hr />
+                        <label className="form-label">Número do Documento</label>
                         <input
-                            type="text"
+                            type="number"
                             className="form-control"
-                            placeholder="Digite o RG"
-                            value={rg.rg}
-                            onChange={(e) => handleRgChange(e, index)}
+                            value={documento.numero}
+                            onChange={(e) => handleChange(e, "documentos", index, "numero")}
+                            required
                         />
+                        <label className="form-label">Tipo de Documento</label>
+                        <select
+                            className="form-select"
+                            value={documento.tipoDocumento}
+                            onChange={(e) => handleChange(e, "documentos", index, "tipoDocumento")}
+                        >
+                            <option value="">Selecione o Tipo de Documento</option>
+                            <option value="Cadastro de Pessoas Física">CPF</option>
+                            <option value="Registro Geral">RG</option>
+                            <option value="Passaporte">Passaporte</option>
+                        </select>
+                        <label className="form-label">Data de Expedição</label>
                         <input
                             type="date"
                             className="form-control"
-                            placeholder="Data de Emissão do RG"
-                            value={rg.dataEmissao}
-                            onChange={(e) => handleDataEmissaoChange(e, index)}
+                            value={documento.dataExpedicao}
+                            onChange={(e) => handleChange(e, "documentos", index, "dataExpedicao")}
+                            required
                         />
+                        {index > 0 ? (
+                            <>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-danger mt-2"
+                                    onClick={() => removeField("documentos", index)}
+                                >
+                                    <FaRegTrashCan />
+                                </button>
+                            </>
+
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 ))}
-
-                <button
-                    className="btn btn-outline-secondary"
+                <Button
                     type="button"
-                    style={{ background: tema, marginBottom: 10 }}
-                    onClick={addRgField}
+                    variant="btn btn-outline-secondary"
+                    onClick={() => addField("documentos")}
                 >
-                    Adicionar RG
-                </button>
+                    Adicionar Documento
+                </Button>
 
-                <br />
+                <hr/>
 
-                <label className="form-titulo">Telefone:</label>
-                {telefoneList.map((telefone, index) => (
-                    <div key={index} className="input-group mb-3">
+                <h4>Telefones:</h4>
+                {/* Campos de Telefones */}
+                {cliente.telefones.map((telefone, index) => (
+                    <div key={index} className="mb-3">
+                        <hr/>
+                        <label className="form-label">DDD</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={telefone.ddd}
+                            onChange={(e) => handleChange(e, "telefones", index, "ddd")}
+                            required
+                        />
+                        <label className="form-label">Número de Telefone</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={telefone.numero}
+                            onChange={(e) => handleChange(e, "telefones", index, "numero")}
+                            required
+                        />
+                        {index > 0 ? (
+                            <button
+                                type="button"
+                                className="btn btn-outline-danger mt-2"
+                                onClick={() => removeField("telefones", index)}
+                            >
+                                <FaRegTrashCan />
+                            </button>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                ))}
+                <Button
+                    type="button"
+                    variant="btn btn-outline-secondary"
+                    onClick={() => addField("telefones")}
+                >
+                    Adicionar Telefone
+                </Button>
+
+                <hr />
+
+
+                <h4>Endereço:</h4>
+                {/* Campos de Endereço */}
+                <div className="mb-3">
+                    <hr/>
+                    <label className="form-label">Rua</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={cliente.endereco.rua}
+                        onChange={(e) => handleChange(e, "endereco", undefined, "rua")}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Bairro</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={cliente.endereco.bairro}
+                        onChange={(e) => handleChange(e, "endereco", undefined, "bairro")}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Cidade</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={cliente.endereco.cidade}
+                        onChange={(e) => handleChange(e, "endereco", undefined, "cidade")}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Estado</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={cliente.endereco.estado}
+                        onChange={(e) => handleChange(e, "endereco", undefined, "estado")}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">País</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={cliente.endereco.pais}
+                        onChange={(e) => handleChange(e, "endereco", undefined, "pais")}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Código Postal</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={cliente.endereco.codigoPostal}
+                        onChange={(e) => handleChange(e, "endereco", undefined, "codigoPostal")}
+                        required
+                    />
+                </div>
+
+                <hr />
+
+                <h4> O Cliente é dependente?</h4>
+                {/* Checkbox para indicar se o cliente é dependente */}
+                <div className="mb-3 form-check">
+                    <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="dependenteCheck"
+                        checked={cliente.dependente}
+                        onChange={(e) => setCliente({ ...cliente, dependente: e.target.checked })}
+                    />
+                    <label className="form-check-label" htmlFor="dependenteCheck">
+                        Sim
+                    </label>
+                </div>
+
+                {/* Campo para inserir documento do titular se o cliente for dependente */}
+                {cliente.dependente && (
+                    <div className="mb-3">
+                        <label className="form-label">Documento do Titular</label>
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Digite o telefone"
-                            value={telefone.telefone}
-                            onChange={(e) => handleTelefoneChange(e, index)}
+                            value={cliente.titularDocumento}
+                            onChange={(e) => handleChange(e, "titularDocumento")}
+                            required={cliente.dependente}
                         />
                     </div>
-                ))}
+                )}
 
-                <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    style={{ background: tema, marginBottom: 10 }}
-                    onClick={addTelefoneField}
-                >
-                    Adicionar Telefone
-                </button>
+                <hr />
+                <br />
 
-                <div className="input-group mb-3 d-flex justify-content-center">
-                    <button className="btn btn-outline-secondary" type="button" style={{ background: tema }}>
-                        Cadastrar
-                    </button>
+                <div className="botaoEnviar" style={{ display: "flex", justifyContent: "center" }}>
+                    <Button variant="btn btn-outline-secondary" onClick="submit">
+                        Confirmar
+                    </Button>
                 </div>
             </form>
-        </div>
+            <br />
+        </div >
     );
 }

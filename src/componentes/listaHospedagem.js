@@ -1,347 +1,169 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
-import { FaShoppingCart } from "react-icons/fa";
 import "./styles/listaGeral.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import ModalEdicaoHospedagem from "./modalEdicaoHospedagem";
 
 
 export default function ListaHospedagem({ tema }) {
-    const [showInfoModal, setShowInfoModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [showProdutoModal, setShowProdutoModal] = useState(false);
-    const [documentosList, setDocumentosList, TipoDocumento] = useState([{ documentos: '', dataExpedicao: '', tipo: '' }]);
-    const [telefoneList, setTelefoneList] = useState([{ telefone: '' }]);
+    const [modalState, setModalState] = useState({
+        show: false,
+        hospedagemSelecionada: null,
+        modalType: ""
+    });
 
-    const Hospedagens = [
+    function handleShow(hospedagem, modalType) {
+        setModalState({
+            show: true,
+            hospedagemSelecionada: hospedagem,
+            modalType: modalType
+        });
+    }
 
-    ]
+    function handleClose() {
+        setModalState({
+            show: false,
+            hospedagemSelecionada: null,
+            modalType: ""
+        });
+    }
 
-    const handleShowProdutoModal = () => {
-        setShowProdutoModal(true);
-    };
+    let cliente1 = {
+        id: 1,
+        nome: "Felipe Vieira",
+        nomeSocial: "Felipe Vieira",
+        dataNascimento: "19/08/1975",
+        dataCadastro: "19/08/1975",
+        documentos: [
+            {
+                numero: "456",
+                dataExpedicao: "19/08/1975",
+                tipoDocumento: "Cadastro de Pessoas Física"
+            }
+        ],
+        telefone: [
+            {
+                ddd: "123",
+                numero: "123123"
+            }
+        ],
+        endereco: {
+            rua: "Rua dos bobos n° 0",
+            bairro: "Bairro de teste",
+            cidade: "São José dos Campos",
+            estado: "São Paulo",
+            pais: "Brasil",
+            codigoPostal: "12312321"
+        },
+        titular: undefined,
+        dependentes: []
+    }
+    let cliente2 = {
+        id: 2,
+        nome: "Dependente Teste",
+        nomeSocial: "Dependente Teste",
+        dataNascimento: "19/08/1975",
+        dataCadastro: "19/08/1975",
+        documentos: [
+            {
+                numero: "123",
+                dataExpedicao: "19/08/1975",
+                tipoDocumento: "Cadastro de Pessoas Física"
+            },
+            {
+                numero: "321",
+                dataExpedicao: "19/08/1975",
+                tipoDocumento: "Passaporte"
+            },
+        ],
+        telefone: [
+            {
+                ddd: "987",
+                numero: "987789"
+            }
+        ],
+        endereco: {
+            rua: "Rua dos bobos n° 15",
+            bairro: "Bairro dos testes",
+            cidade: "São José dos Campos",
+            estado: "São Paulo",
+            pais: "Brasil",
+            codigoPostal: "12312321"
+        },
+        titular: cliente1,
+        dependentes: []
+    }
 
-    const handleCloseProdutoModal = () => {
-        setShowProdutoModal(false);
-    };
+    cliente1.dependentes.push(cliente2)
 
-    const handleShowInfoModal = () => {
-        setShowInfoModal(true);
-    };
+    let hospedagem1 = {
+        dataInicio: "09/05/2024",
+        dataFinal: "14/05/2024",
+        acomodacao: "Solteiro Simples",
+        clientes: [cliente1]
+    }
 
-    const handleCloseInfoModal = () => {
-        setShowInfoModal(false);
-    };
+    let hospedagem2 = {
+        dataInicio: "19/06/2024",
+        dataFinal: "24/06/2024",
+        acomodacao: "Família Simples",
+        clientes: [cliente1, cliente2]
+    }
 
-    const handleShowEditModal = () => {
-        setShowEditModal(true);
-    };
+    let hospedagem3 = {
+        dataInicio: "17/02/2025",
+        dataFinal: "28/02/2025",
+        acomodacao: "Casal Simples",
+        clientes: [cliente1, cliente2]
+    }
 
-    const handleCloseEditModal = () => {
-        setShowEditModal(false);
-    };
-
-    const addRgField = () => {
-        setRgList([...rgList, { rg: '', dataExpedicao: '' }]);
-    };
-
-    const handleRgChange = (e, index) => {
-        const updatedRgList = [...rgList];
-        updatedRgList[index].rg = e.target.value;
-        setRgList(updatedRgList);
-    };
-
-    const handleDataExpedicaoChange = (e, index) => {
-        const updatedRgList = [...rgList];
-        updatedRgList[index].dataExpedicao = e.target.value;
-        setRgList(updatedRgList);
-    };
-
-    const addTelefoneField = () => {
-        setTelefoneList([...telefoneList, { telefone: '' }]);
-    };
-
-    const handleTelefoneChange = (e, index) => {
-        const updatedTelefoneList = [...telefoneList];
-        updatedTelefoneList[index].telefone = e.target.value;
-        setTelefoneList(updatedTelefoneList);
-    };
+    const hospedagens = [hospedagem1, hospedagem2, hospedagem3]
 
     return (
-        <div className="container-cliente">
-        <div className="modal-cliente">
-            <Modal show={showInfoModal} onHide={handleCloseInfoModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Informações do cliente</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>
-                        <strong>Nome:</strong>
-                    </p>
-                    <p>
-                        <strong>Nome social:</strong>
-                    </p>
-                    <p>
-                        <strong>Data Nascimento:</strong>
-                    </p>
-                    <p>
-                        <strong>Data Cadastro:</strong>
-                    </p>
-                    <p>
-                        <strong>CPF:</strong>
-                    </p>
-                    <p>
-                        <strong>Data de emissão do CPF:</strong>
-                    </p>
-                    <p>
-                        <strong>RG:</strong>
-                    </p>
-                    <p>
-                        <strong>Data de emissão do RG:</strong>
-                    </p>
-                    <p>
-                        <strong>Telefone:</strong>
-                    </p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseInfoModal}>
-                        Fechar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-
-        <div className="modal-atualizar">
-            <Modal show={showEditModal} onHide={handleCloseEditModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Atualizar cliente</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form>
-                        <label className="form-titulo">Nome:</label>
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder="Digite o nome" aria-label="Nome" aria-describedby="basic-addon1" />
-                        </div>
-
-                        <label className="form-titulo">Nome social:</label>
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder="Digite o nome social" aria-label="Nome social" aria-describedby="basic-addon1" />
-                        </div>
-
-                        <label className="form-titulo">E-mail:</label>
-                        <div className="input-group mb-3">
-                            <span className="input-group-text" id="basic-addon1" style={{ background: tema }}>@</span>
-                            <input type="text" className="form-control" placeholder="Digite o E-mail" aria-label="E-mail" aria-describedby="basic-addon1" />
-                        </div>
-
-                        <label className="form-titulo">CPF:</label>
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder=" Digite o CPF" aria-label="CPF" aria-describedby="basic-addon1" />
-                        </div>
-
-                        <label className="form-titulo">Data de Emissão do CPF:</label>
-                        <div className="input-group mb-3">
-                            <input type="date" className="form-control" placeholder="Data de Emissão do CPF" aria-label="Data de emissão do CPF" aria-describedby="basic-addon1" />
-                        </div>
-
-                        <label className="form-titulo">RG:</label>
-                        {rgList.map((rg, index) => (
-                            <div key={index} className="input-group mb-3">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Digite o RG"
-                                    value={rg.rg}
-                                    onChange={(e) => handleRgChange(e, index)}
-                                />
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    placeholder="Data de Emissão do RG"
-                                    value={rg.dataExpedicao}
-                                    onChange={(e) => handleDataExpedicaoChange(e, index)}
-                                />
-                            </div>
-                        ))}
-
-                        <button
-                            className="btn btn-outline-secondary"
-                            type="button"
-                            style={{ background: tema, marginBottom: 10 }}
-                            onClick={addRgField}
-                        >
-                            Adicionar RG
-                        </button>
-
-                        <br />
-
-                        <label className="form-titulo">Telefone:</label>
-                        {telefoneList.map((telefone, index) => (
-                            <div key={index} className="input-group mb-3">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Digite o telefone"
-                                    value={telefone.telefone}
-                                    onChange={(e) => handleTelefoneChange(e, index)}
-                                />
-                            </div>
-                        ))}
-
-                        <button
-                            className="btn btn-outline-secondary"
-                            type="button"
-                            style={{ background: tema, marginBottom: 10 }}
-                            onClick={addTelefoneField}
-                        >
-                            Adicionar Telefone
-                        </button>
-
-                        <div className="input-group mb-3 d-flex justify-content-center">
-                            <button className="btn btn-outline-secondary" type="button" style={{ background: tema }}>
-                                Atualizar
-                            </button>
-                        </div>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseEditModal}>
-                        Fechar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-
-        <div className="excluir-produtoServico">
-            <Modal show={showProdutoModal} onHide={handleCloseProdutoModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Produtos/serviços consumidos</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="lista-produtosServicos">
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p style={{ margin: 0 }}>
-                                <strong>Nome do produto/serviço 1:</strong>
-                            </p>
-                            <div className="btn-group" style={{ marginLeft: '5px' }}>
+        <div className="container-fluid">
+            <div>
+                {modalState.show && modalState.modalType === "Edição" && (
+                    <ModalEdicaoHospedagem show={modalState.show} handleClose={handleClose} tema={tema} hospedagem={modalState.hospedagemSelecionada} />
+                )}
+                <h3 className="titulo">Hospedagens</h3>
+                <div className="list-group">
+                    {hospedagens.map((hospedagem, index) => (
+                        <>
+                            <div key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                                <a
+                                    href="#"
+                                    className="list-group-item-action custom-link"
+                                    onClick={() => handleShow(hospedagem, "Informações")}
+                                >
+                                    <p> <strong> {hospedagem.acomodacao} </strong> {hospedagem.dataInicio} - {hospedagem.dataFinal} </p>
+                                    <strong> Clientes: </strong>
+                                    {hospedagem.clientes.map(cliente => (
+                                        <>
+                                            {" " + cliente.nome}
+                                        </>
+                                    ))}
+                                </a>
                                 <button
+                                    onClick={() => handleShow(hospedagem, 'Edição')}
                                     type="button"
-                                    className="botao-excluir"
-                                    style={{
-                                        border: 'none',
-                                        background: 'none',
-                                        cursor: 'pointer',
-                                    }}
+                                    className="btn btn-outline-primary"
+                                >
+                                    <FaPencil style={{ fontSize: 20 }} />
+                                </button>
+                                <button
+                                    onClick={() => console.log("Deletando hospedagem")}
+                                    type="button"
+                                    className="btn btn-outline-danger"
                                 >
                                     <FaRegTrashCan style={{ fontSize: 20 }} />
                                 </button>
                             </div>
-                        </div>
-                        <p>
-                            <strong>Preço do produto/serviço 1:</strong>
-                        </p>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p style={{ margin: 0 }}>
-                                <strong>Nome do produto/serviço 2:</strong>
-                            </p>
-                            <div className="btn-group" style={{ marginLeft: '5px' }}>
-                                <button
-                                    type="button"
-                                    className="botao-excluir"
-                                    style={{
-                                        border: 'none',
-                                        background: 'none',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <FaRegTrashCan style={{ fontSize: 20 }} />
-                                </button>
-                            </div>
-                        </div>
-                        <p>
-                            <strong>Preço do produto/serviço 2:</strong>
-                        </p>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseProdutoModal}>
-                        Fechar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-
-        <div className="conteudo">
-            <h3 className="titulo">Clientes</h3>
-            <div className="list-group">
-                <div className="list-group-item d-flex justify-content-between align-items-center">
-                    <a
-                        href="#"
-                        className="list-group-item-action custom-link"
-                        onClick={handleShowInfoModal}
-                    >
-                        Cliente 1
-                    </a>
-                    <div className="btn-group">
-                        <button
-                            onClick={handleShowProdutoModal}
-                            type="button"
-                            className="btn btn-outline-primary"
-                        >
-                            <FaShoppingCart style={{ fontSize: 20 }} />
-                        </button>
-                        <button
-                            onClick={handleShowEditModal}
-                            type="button"
-                            className="btn btn-outline-primary"
-                        >
-                            <FaPencil style={{ fontSize: 20 }} />
-                        </button>
-                        <button
-                            onClick={() => console.log("Deletando Cliente 1")}
-                            type="button"
-                            className="btn btn-outline-danger"
-                        >
-                            <FaRegTrashCan style={{ fontSize: 20 }} />
-                        </button>
-                    </div>
-                </div>
-                <div className="list-group-item d-flex justify-content-between align-items-center">
-                    <a
-                        href="#"
-                        className="list-group-item-action custom-link"
-                        onClick={handleShowInfoModal}
-                    >
-                        Cliente 2
-                    </a>
-                    <div className="btn-group">
-                        <button
-                            onClick={handleShowProdutoModal}
-                            type="button"
-                            className="btn btn-outline-primary"
-                        >
-                            <FaShoppingCart style={{ fontSize: 20 }} />
-                        </button>
-                        <button
-                            onClick={handleShowEditModal}
-                            type="button"
-                            className="btn btn-outline-primary"
-                        >
-                            <FaPencil style={{ fontSize: 20 }} />
-                        </button>
-                        <button
-                            onClick={() => console.log("Deletando Cliente 1")}
-                            type="button"
-                            className="btn btn-outline-danger"
-                        >
-                            <FaRegTrashCan style={{ fontSize: 20 }} />
-                        </button>
-                    </div>
+                            <br />
+                        </>
+                    ))}
                 </div>
             </div>
         </div>
-    </div >
     )
 }

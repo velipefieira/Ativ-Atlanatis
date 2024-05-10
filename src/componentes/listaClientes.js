@@ -31,15 +31,16 @@ export default function ListaClientes({ tema }) {
     }
 
     let cliente1 = {
+        id: 1,
         nome: "Felipe Vieira",
         nomeSocial: "Felipe Vieira",
-        dataNascimento: new Date("August 19, 1975 23:15:30"),
-        dataCadastro: new Date("August 19, 1975 23:15:30"),
+        dataNascimento: "19/08/1975",
+        dataCadastro: "19/08/1975",
         documentos: [
             {
                 numero: "456",
-                dataExpedicao: new Date("August 19, 1975 23:15:30"),
-                tipo: "Cadastro de Pessoas Física"
+                dataExpedicao: "19/08/1975",
+                tipoDocumento: "Cadastro de Pessoas Física"
             }
         ],
         telefone: [
@@ -60,20 +61,21 @@ export default function ListaClientes({ tema }) {
         dependentes: []
     }
     let cliente2 = {
+        id: 2,
         nome: "Dependente Teste",
         nomeSocial: "Dependente Teste",
-        dataNascimento: new Date("August 19, 1975 23:15:30"),
-        dataCadastro: new Date("August 19, 1975 23:15:30"),
+        dataNascimento: "19/08/1975",
+        dataCadastro: "19/08/1975",
         documentos: [
             {
                 numero: "123",
-                dataExpedicao: new Date("August 19, 1975 23:15:30"),
-                tipo: "Cadastro de Pessoas Física"
+                dataExpedicao: "19/08/1975",
+                tipoDocumento: "Cadastro de Pessoas Física"
             },
             {
                 numero: "321",
-                dataExpedicao: new Date("August 19, 1975 23:15:30"),
-                tipo: "Passaporte"
+                dataExpedicao: "19/08/1975",
+                tipoDocumento: "Passaporte"
             },
         ],
         telefone: [
@@ -101,40 +103,43 @@ export default function ListaClientes({ tema }) {
     return (
         <div className="container-fluid">
             <div>
-                {modalState.show && modalState.modalType === "Informações" &&(
+                {modalState.show && modalState.modalType === "Informações" && (
                     <ModalInformacoesCliente show={modalState.show} handleClose={handleClose} tema={tema} cliente={modalState.clienteSelecionado} />
                 )}
-                {modalState.show && modalState.modalType === "Edição" &&(
+                {modalState.show && modalState.modalType === "Edição" && (
                     <ModalEdicaoCliente show={modalState.show} handleClose={handleClose} tema={tema} cliente={modalState.clienteSelecionado} />
                 )}
                 <h3 className="titulo">Clientes</h3>
                 <div className="list-group">
                     {clientes.map((cliente, index) => (
-                        <div key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                            <a
-                                href="#"
-                                className="list-group-item-action custom-link"
-                                onClick={() => handleShow(cliente, "Informações")}
-                            >
-                                {cliente.nome}
-                            </a>
-                            <button
-                                onClick={() => handleShow(cliente, 'Edição')}
-                                type="button"
-                                className="btn btn-outline-primary"
-                            >
-                                <FaPencil style={{ fontSize: 20 }} />
-                            </button>
-                            <div className="btn-group">
-                                <button
-                                    onClick={() => console.log("Deletando Cliente")}
-                                    type="button"
-                                    className="btn btn-outline-danger"
+                        <>
+                            <div key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                                <a
+                                    href="#"
+                                    className="list-group-item-action custom-link"
+                                    onClick={() => handleShow(cliente, "Informações")}
                                 >
-                                    <FaRegTrashCan style={{ fontSize: 20 }} />
+                                    <strong> {cliente.nome} </strong> - {cliente.nomeSocial}
+                                </a>
+                                <button
+                                    onClick={() => handleShow(cliente, 'Edição')}
+                                    type="button"
+                                    className="btn btn-outline-primary"
+                                >
+                                    <FaPencil style={{ fontSize: 20 }} />
                                 </button>
+                                <div className="btn-group">
+                                    <button
+                                        onClick={() => console.log("Deletando Cliente")}
+                                        type="button"
+                                        className="btn btn-outline-danger"
+                                    >
+                                        <FaRegTrashCan style={{ fontSize: 20 }} />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                            <p/>
+                        </>
                     ))}
                 </div>
             </div>

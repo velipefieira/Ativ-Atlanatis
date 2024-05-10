@@ -1,9 +1,11 @@
 import React, { Component, MouseEvent } from "react";
 import Home from "./home";
-import ListaCliente from "./listaClientes";
 import BarraNavegacao from "./barraNavegacao";
 import Acomodacoes from "./acomodacoes";
 import ListaClientes from "./listaClientes";
+import ListaHospedagem from "./listaHospedagem";
+import CadastroCliente from "./formularioCadastroCliente";
+import CadastroHospedagem from "./formularioCadastroHospedagem";
 
 export default class Roteador extends Component {
   tema = "#f6cca4"
@@ -38,8 +40,10 @@ export default class Roteador extends Component {
         {barraNavegacao}
         {this.state.tela === "Home" && <Home tema={this.tema} />}
         {this.state.tela === "Acomodações" && <Acomodacoes tema={this.tema}/>}
-        {/* this.state.tela === "Hospedagens" && <Hobbies tema={this.tema}/>} */}
+        { this.state.tela === "Hospedagens" && <ListaHospedagem tema={this.tema}/>}
         {this.state.tela === "Cliente" && <ListaClientes tema={this.tema}/>}
+        {this.state.tela === "Cadastro de Cliente" && <CadastroCliente tema={this.tema}/>}
+        {this.state.tela === "Cadastro de Hospedagem" && <CadastroHospedagem tema={this.tema}/>}
       </>
     );
   }

@@ -1,15 +1,22 @@
 .form-titulo {
-    font-weight: 600 ;
-    margin-bottom: 5px;
+  text-align: center;
+  font-weight: 600;
+  margin: 2%;
 }
 
 form {
-    width: 80%;
-    margin: 0 auto;
+  width: 90%;
+  margin: 0 auto;
 }
 
-@media (max-width: 900px){
+
+
+@media (max-width: 900px) {
   form {
     width: 90%;
   }
+}
+
+.botaoEnviar {
+  margin: 3%;
 }
