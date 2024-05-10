@@ -1,7 +1,6 @@
 import Processo from "../../abstracoes/processo";
 import BuscarClientePorDocumento from "../../buscas/buscarClientePorDocumento";
 import Armazem from "../../dominio/armazem";
-import ImpressorCliente from "../../impressores/impressorCliente";
 import ImpressaorCliente from "../../impressores/impressorCliente";
 import Impressor from "../../interfaces/impressor";
 import Cliente from "../../modelos/cliente";
@@ -26,7 +25,7 @@ export default class ListagemDependentesDoTitular extends Processo {
                 console.log("Este cliente não possui dependentes");
             } else {
                 titular.Dependentes.forEach(dependente => {
-                    this.impressor = new ImpressorCliente(dependente)
+                    this.impressor = new ImpressaorCliente(dependente)
                     console.log(this.impressor.imprimir())
                 })
             }

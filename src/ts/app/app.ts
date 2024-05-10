@@ -6,16 +6,12 @@ import Cliente from "../modelos/cliente"
 import Documento from "../modelos/documento"
 import Endereco from "../modelos/endereco"
 import Telefone from "../modelos/telefone"
-import CadastroAcomodacoes from "../processos/cadastro/cadastroAcomodacoes";
 
 console.clear()
 console.log(`Bem-vindo(a) ao melhor sistema de gestão de clubes, hotéis e resorts do mundo, o Atlantis :)`);
 
 let processo: Processo
 let execucao: Boolean = true
-
-processo = new CadastroAcomodacoes()
-processo.processar()
 
 let armazem = Armazem.InstanciaUnica
 let clienteTeste = new Cliente("Felipe Vieira", "Felipe", new Date(2005, 9, 27))

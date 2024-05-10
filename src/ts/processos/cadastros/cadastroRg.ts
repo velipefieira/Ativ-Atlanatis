@@ -1,4 +1,6 @@
 import Processo from "../../abstracoes/processo";
+import VerificarDocumento from "../../buscas/verificarDocumento";
+import Armazem from "../../dominio/armazem";
 import { TipoDocumento } from "../../enumeracoes/TipoDocumento";
 import Cliente from "../../modelos/cliente";
 import Documento from "../../modelos/documento";
@@ -11,9 +13,16 @@ export default class CadastroRg extends Processo {
     }
 
     processar(): void {
+        let clientes = Armazem.InstanciaUnica.Clientes
         let numero = this.entrada.receberTexto('Qual o número do documento?')
         let dataExpedicao = this.entrada.receberData('Qual a data de expedição do documento?')
-        let rg = new Documento(numero, TipoDocumento.RG, dataExpedicao)
-        this.cliente.Documentos.push(rg)
+        let verificacao = VerificarDocumento(clientes, numero)
+        if (verificacao == true){
+            let cpf = new Documento(numero, TipoDocumento.RG, dataExpedicao)
+            this.cliente.Documentos.push(cpf)
+        } else {
+            console.log("Documento já registrado no sistema");
+            
+        }
     }
 }

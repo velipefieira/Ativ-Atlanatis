@@ -1,6 +1,5 @@
 import Processo from "../../abstracoes/processo";
 import Armazem from "../../dominio/armazem";
-import ImpressorCliente from "../../impressores/impressorCliente";
 import ImpressaorCliente from "../../impressores/impressorCliente";
 import Impressor from "../../interfaces/impressor";
 import Cliente from "../../modelos/cliente";
@@ -18,7 +17,7 @@ export default class ListagemTitulares extends Processo {
         this.clientes.forEach(cliente => {
             let titular = this.titular(cliente)
             if (titular === true) {
-                this.impressor = new ImpressorCliente(cliente)
+                this.impressor = new ImpressaorCliente(cliente)
                 console.log(this.impressor.imprimir())
             }
         })

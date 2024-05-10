@@ -33,7 +33,7 @@ export default class Cliente {
     public get Documentos() { return this.documentos }
     public get Dependentes() { return this.dependentes }
     public get Titular() { return this.titular }
-
+    
     public addDependente(cliente:Cliente){ this.dependentes.push(cliente)}
     public removerDependente(cliente:Cliente){ 
         this.dependentes = this.dependentes.filter(dependente => dependente.id !== cliente.id)

@@ -3,6 +3,7 @@ import Processo from "../../abstracoes/processo"
 import MenuTipoDocumento from "../../menus/menuTipoDocumento"
 import Cliente from "../../modelos/cliente"
 import Telefone from "../../modelos/telefone"
+import CadastroCpf from "./cadastroCpf"
 
 export default class CadastroTelefonesCliente extends Processo {
     private cliente: Cliente

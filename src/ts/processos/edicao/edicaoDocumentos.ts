@@ -1,16 +1,21 @@
 import Processo from "../../abstracoes/processo";
+import BuscarClientePorDocumento from "../../buscas/buscarClientePorDocumento";
 import Armazem from "../../dominio/armazem";
+import ImpressaorCliente from "../../impressores/impressorCliente";
 import ImpressorDocumento from "../../impressores/impressorDocumento";
+import ImpressorTelefone from "../../impressores/impressorTelefone";
 import Impressor from "../../interfaces/impressor";
 import Cliente from "../../modelos/cliente";
 import Documento from "../../modelos/documento";
 import Telefone from "../../modelos/telefone";
-
+import CadastrarDocumentosCliente from "../cadastros/cadastroDocumentosCliente";
+import CadastroEnderecoTitular from "../cadastros/cadastroEnderecoCliente";
 
 export default class EdicaoDocumentos extends Processo {
     private clientes: Cliente[]
     private clienteEditado: Cliente
     private impressor!: Impressor
+    private documentos: Telefone[] = []
     constructor(clienteEditado:Cliente) {
         super()
         this.clienteEditado = clienteEditado

@@ -4,7 +4,7 @@ export default class MenuTipoDocumento implements Menu {
     mostrar(): void {
         console.clear()
         console.log(`****************************`)
-        console.log(`| Qual o tipo do documento para cadastro? `)
+        console.log(`| Qual o tipo do documento para cadastro? (Cada cliente deve ter ao menos um documento)`)
         console.log(`----------------------`)
         console.log(`| 1 - Cadastro de Pessoas Física`)
         console.log(`| 2 - Registro Geral`)

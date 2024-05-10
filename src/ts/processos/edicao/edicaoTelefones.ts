@@ -1,9 +1,13 @@
 import Processo from "../../abstracoes/processo";
+import BuscarClientePorDocumento from "../../buscas/buscarClientePorDocumento";
 import Armazem from "../../dominio/armazem";
+import ImpressaorCliente from "../../impressores/impressorCliente";
 import ImpressorTelefone from "../../impressores/impressorTelefone";
 import Impressor from "../../interfaces/impressor";
 import Cliente from "../../modelos/cliente";
 import Telefone from "../../modelos/telefone";
+import CadastrarDocumentosCliente from "../cadastros/cadastroDocumentosCliente";
+import CadastroEnderecoTitular from "../cadastros/cadastroEnderecoCliente";
 
 export default class EdicaoTelefones extends Processo {
     private clientes: Cliente[]

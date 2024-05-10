@@ -1,7 +1,7 @@
 import Processo from "../../abstracoes/processo";
 import BuscarClientePorDocumento from "../../buscas/buscarClientePorDocumento";
 import Armazem from "../../dominio/armazem";
-import ImpressorCliente from "../../impressores/impressorCliente";
+import ImpressaorCliente from "../../impressores/impressorCliente";
 import Impressor from "../../interfaces/impressor";
 import Cliente from "../../modelos/cliente";
 
@@ -22,7 +22,7 @@ export default class ListagemTitularDoDependente extends Processo {
         let cliente = BuscarClientePorDocumento(armazem.Clientes, documento)
         if (cliente != null && cliente.Titular != undefined) {
             if (cliente.Titular){
-                this.impressor = new ImpressorCliente(cliente.Titular)
+                this.impressor = new ImpressaorCliente(cliente.Titular)
                 console.log(`\n Este é o titular deste cliente: \n`);
                 console.log(this.impressor.imprimir())
             } else {

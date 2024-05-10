@@ -1,5 +1,6 @@
 import Processo from "../../abstracoes/processo";
 import Armazem from "../../dominio/armazem";
+import ImpressorEndereco from "../../impressores/impressorEndereco";
 import Impressor from "../../interfaces/impressor";
 import Cliente from "../../modelos/cliente";
 import Endereco from "../../modelos/endereco";
